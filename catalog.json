@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "updated": "2026-05-09",
+  "products": [
+    {
+      "id": "g1",
+      "name": "Le Creuset Signature braadpan 24 cm",
+      "price": "€289",
+      "tag": "Bestseller",
+      "colorHex": "D4626A",
+      "interests": ["Koken"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g2",
+      "name": "Wijnkookboek met 60 recepten",
+      "price": "€24",
+      "tag": "Tip",
+      "colorHex": "8B6FD4",
+      "interests": ["Koken", "Wijn & Drank"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g3",
+      "name": "Compacte handbagagekoffer 35L",
+      "price": "€89",
+      "tag": "Nieuw",
+      "colorHex": "A8D8C5",
+      "interests": ["Reizen"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g4",
+      "name": "Lederen paspoorthouder gepersonaliseerd",
+      "price": "€34",
+      "tag": "",
+      "colorHex": "E8A0B0",
+      "interests": ["Reizen"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g5",
+      "name": "Italiaanse wijnselectie (6 flessen)",
+      "price": "€78",
+      "tag": "",
+      "colorHex": "9B5C7E",
+      "interests": ["Wijn & Drank"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g6",
+      "name": "Hardloophorloge met GPS",
+      "price": "€199",
+      "tag": "Bestseller",
+      "colorHex": "5B7DC9",
+      "interests": ["Sport"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g7",
+      "name": "Spier-massagepistool premium",
+      "price": "€129",
+      "tag": "",
+      "colorHex": "F5B96E",
+      "interests": ["Sport", "Beauty"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g8",
+      "name": "Rituals giftset The Ritual of Sakura",
+      "price": "€42",
+      "tag": "Geliefd",
+      "colorHex": "E8A0B0",
+      "interests": ["Beauty"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g9",
+      "name": "E-reader met verlicht scherm",
+      "price": "€159",
+      "tag": "",
+      "colorHex": "3F4756",
+      "interests": ["Lezen"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g10",
+      "name": "Botanisch kweekkit (5 kruiden)",
+      "price": "€29",
+      "tag": "",
+      "colorHex": "84C4AC",
+      "interests": ["Natuur"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g11",
+      "name": "Draadloze noise-cancelling oordopjes",
+      "price": "€179",
+      "tag": "Bestseller",
+      "colorHex": "2A2330",
+      "interests": ["Tech", "Muziek"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g12",
+      "name": "Mechanisch toetsenbord 65%",
+      "price": "€149",
+      "tag": "",
+      "colorHex": "564A63",
+      "interests": ["Gaming", "Tech"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g13",
+      "name": "Bluetooth platenspeler walnoot",
+      "price": "€229",
+      "tag": "Nieuw",
+      "colorHex": "8B6F4D",
+      "interests": ["Muziek"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g14",
+      "name": "Pathé filmcadeaubon €50",
+      "price": "€50",
+      "tag": "",
+      "colorHex": "D4263A",
+      "interests": ["Film & Series"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g15",
+      "name": "Luxe katten-klimpaal, modulair",
+      "price": "€119",
+      "tag": "",
+      "colorHex": "C9B89A",
+      "interests": ["Huisdieren"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g16",
+      "name": "Olijfolie proeverij (4 jaargangen)",
+      "price": "€38",
+      "tag": "",
+      "colorHex": "9CB36A",
+      "interests": ["Koken"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g17",
+      "name": "Koffie abonnement (3 maanden specialty)",
+      "price": "€45",
+      "tag": "Nieuw",
+      "colorHex": "6F4E37",
+      "interests": ["Tech"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g18",
+      "name": "Yoga mat premium kurk",
+      "price": "€69",
+      "tag": "",
+      "colorHex": "A8D8C5",
+      "interests": ["Sport", "Beauty"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g19",
+      "name": "Polaroid Now camera wit",
+      "price": "€109",
+      "tag": "",
+      "colorHex": "9FB8E8",
+      "interests": ["Reizen"],
+      "affiliateURL": null
+    },
+    {
+      "id": "g20",
+      "name": "Nintendo Switch Lite",
+      "price": "€199",
+      "tag": "Bestseller",
+      "colorHex": "E4000F",
+      "interests": ["Gaming"],
+      "affiliateURL": null
+    }
+  ]
+}
