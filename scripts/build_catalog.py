@@ -1,5 +1,3 @@
-$ cat /tmp/boxi-catalog-update/scripts/build_catalog.py
-
 #!/usr/bin/env python3
 """
 Builds catalog.json from bol.com's Marketing Catalog API.
