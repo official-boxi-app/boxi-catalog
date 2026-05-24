@@ -84,12 +84,12 @@ COLORS = {
 }
 
 OFFTOPIC_BLOCKLIST = ["kerstboom", "philosophy", "palgrave", "perspectives"]
-PER_CELL = 12
+PER_CELL = 48
 
 # Per bol-categorie maximaal zoveel items meenemen, zodat subcategorieën
 # binnen een interesse in balans blijven (anders vult één subcategorie alles).
-CAP_PER_SUBCAT = 90
-CAP_PER_PLAIN_CAT = 240
+CAP_PER_SUBCAT = 350
+CAP_PER_PLAIN_CAT = 800
 
 # --- Leeftijd-tagging -------------------------------------------------------
 # bol levert geen leeftijdsdata; deze regels leiden het af uit titel + subcategorie.
@@ -217,7 +217,7 @@ def main():
         for cat_id, cat_label, subcat in cats:
             cat_cap = CAP_PER_SUBCAT if subcat else CAP_PER_PLAIN_CAT
             cat_count = 0
-            for page in range(1, 7):
+            for page in range(1, 17):
                 if cat_count >= cat_cap: break
                 data = api_get(token, "/products/lists/popular",
                     **{"category-id": cat_id, "country-code": "NL", "page": page,
