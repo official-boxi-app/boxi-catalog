@@ -4,6 +4,11 @@ Builds catalog.json from bol.com's Marketing Catalog API.
 
 Reads BOL_CLIENT_ID and BOL_CLIENT_SECRET from environment.
 Runs via GitHub Action (daily cron) or locally.
+
+Tagt elk product met:
+  - subcategory : afgeleid van de bol-(sub)categorie waar het uit komt
+  - minAge/maxAge : leeftijdsgrens van de ontvanger (regelgebaseerd)
+en ontdubbelt variant-producten per categorie+budget-cel.
 """
 import base64
 import json
@@ -11,6 +16,7 @@ import os
 import random
 import sys
 import time
+import unicodedata
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -22,19 +28,34 @@ if not CID or not CS:
     print("❌ Missing BOL_CLIENT_ID or BOL_CLIENT_SECRET environment variables", file=sys.stderr)
     sys.exit(1)
 
+# Per interesse: lijst van (bol-categorie-id, label, subcategorie).
+#   subcategorie = None  → interesse zonder verfijning (geen sub-filter in de app)
+#   subcategorie = "..." → elk product uit die bol-categorie krijgt dit subcategorie-label
 INTEREST_CATEGORIES = {
-    "Koken":         [("11764", "Koken & Tafelen")],
-    "Sport":         [("14648", "Sport")],
-    "Reizen":        [("16799", "Reisbagage"), ("15270", "Kamperen")],
-    "Muziek":        [("3132", "Muziek")],
-    "Tech":          [("3136", "Elektronica"), ("3134", "Computer")],
-    "Beauty":        [("43228", "Beauty")],
-    "Gaming":        [("3135", "Gaming")],
-    "Lezen":         [("8299", "Boeken")],
-    "Natuur":        [("12974", "Tuin")],
-    "Film & Series": [("3133", "Films & Series")],
-    "Wijn & Drank":  [("36080", "Eten & Drinken")],
-    "Huisdieren":    [("12748", "Dieren")],
+    "Koken":         [("11764", "Koken & Tafelen", None)],
+    "Sport":         [("14648", "Sport", None)],
+    "Reizen":        [("16799", "Reisbagage", None), ("15270", "Kamperen", None)],
+    "Muziek":        [("3132", "Muziek", None)],
+    "Tech":          [("3136", "Elektronica", None), ("3134", "Computer", None)],
+    "Beauty":        [("43228", "Beauty", None)],
+    "Gaming":        [("3135", "Gaming", None)],
+    "Lezen": [
+        ("24410", "Literatuur & Romans",       "Romans & thrillers"),
+        ("2551",  "Thrillers & Spanning",      "Romans & thrillers"),
+        ("24421", "Kinderboeken",              "Kinderboeken"),
+        ("52814", "Strips & Manga",            "Strips & manga"),
+        ("40342", "Biografieën",               "Non-fictie"),
+        ("24054", "Persoonlijke ontwikkeling", "Non-fictie"),
+    ],
+    "Natuur":        [("12974", "Tuin", None)],
+    "Film & Series": [("3133", "Films & Series", None)],
+    "Wijn & Drank":  [("36080", "Eten & Drinken", None)],
+    "Huisdieren": [
+        ("12749", "Honden",      "Honden"),
+        ("12835", "Katten",      "Katten"),
+        ("12888", "Knaagdieren", "Knaagdieren"),
+        ("12885", "Vissen",      "Vissen"),
+    ],
 }
 
 # Search fallbacks for cells that don't have enough items via popular endpoint
@@ -65,11 +86,50 @@ COLORS = {
 OFFTOPIC_BLOCKLIST = ["kerstboom", "philosophy", "palgrave", "perspectives"]
 PER_CELL = 12
 
+# Per bol-categorie maximaal zoveel items meenemen, zodat subcategorieën
+# binnen een interesse in balans blijven (anders vult één subcategorie alles).
+CAP_PER_SUBCAT = 90
+CAP_PER_PLAIN_CAT = 240
+
+# --- Leeftijd-tagging -------------------------------------------------------
+# bol levert geen leeftijdsdata; deze regels leiden het af uit titel + subcategorie.
+PEGI18_KEYWORDS = [
+    "call of duty", "grand theft auto", "assassin's creed", "cyberpunk",
+    "mortal kombat", "resident evil", "the last of us", "red dead",
+    "far cry", "hitman", "sniper elite", "doom eternal", "mafia",
+]
+SPIRITS_KEYWORDS = ["distilleer", "destilleer", "moonshine"]
+
+
+def compute_age(interest, subcategory, title):
+    """Geeft (minAge|None, maxAge|None) voor een product."""
+    t = title.lower()
+    min_age = max_age = None
+    if subcategory == "Kinderboeken":
+        max_age = 12
+    if "voor volwassenen" in t:
+        min_age = 16
+    if interest == "Gaming" and any(k in t for k in PEGI18_KEYWORDS):
+        min_age = 16
+    if any(k in t for k in SPIRITS_KEYWORDS):
+        min_age = 18
+    return min_age, max_age
+
+
+def family_key(name):
+    """Sleutel om variant-producten (zelfde product, andere kleur/maat) te herkennen.
+    Identiek aan GiftItem.familyKey in de app."""
+    s = unicodedata.normalize("NFD", name.lower())
+    s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+    return s.split(" - ")[0].strip()
+
+
 def bucket(price):
     if price < 25: return "Onder €25"
     if price < 50: return "€25-50"
     if price < 100: return "€50-100"
     return "€100+"
+
 
 def get_token():
     auth = base64.b64encode(f"{CID}:{CS}".encode()).decode()
@@ -79,6 +139,7 @@ def get_token():
     )
     with urllib.request.urlopen(req, timeout=15) as r:
         return json.loads(r.read())["access_token"]
+
 
 def api_get(token, path, **params):
     qs = urllib.parse.urlencode(params)
@@ -94,7 +155,8 @@ def api_get(token, path, **params):
             return {"results": []}
         raise
 
-def collect(token, items, dest, seen_pids, want_budget=None):
+
+def collect(token, items, dest, seen_pids, want_budget=None, subcategory=None):
     added = 0
     for p in items:
         pid = p.get("bolProductId")
@@ -112,10 +174,34 @@ def collect(token, items, dest, seen_pids, want_budget=None):
         seen_pids.add(pid)
         dest.append({
             "ean": p.get("ean"), "bolProductId": pid, "title": title,
-            "price": price, "image": img,
+            "price": price, "image": img, "subcategory": subcategory,
         })
         added += 1
     return added
+
+
+def select_cell(items):
+    """Selecteert tot PER_CELL producten voor één interesse+budget-cel:
+    ontdubbelt op productfamilie en mengt subcategorieën via round-robin,
+    zodat elke subcategorie kans maakt in de cel."""
+    seen = set()
+    by_sub = defaultdict(list)
+    for it in items:
+        fk = family_key(it["title"])
+        if fk in seen:
+            continue
+        seen.add(fk)
+        by_sub[it.get("subcategory")].append(it)
+
+    subs = list(by_sub.keys())
+    chosen, i = [], 0
+    while len(chosen) < PER_CELL and any(by_sub.values()):
+        lst = by_sub[subs[i % len(subs)]]
+        if lst:
+            chosen.append(lst.pop(0))
+        i += 1
+    return chosen
+
 
 def main():
     print(f"🚀 Refreshing catalog at {time.strftime('%Y-%m-%d %H:%M:%S')}")
@@ -125,25 +211,27 @@ def main():
     buckets = defaultdict(lambda: defaultdict(list))
     seen_pids = set()
 
-    # Phase 1: popular per category
+    # Phase 1: popular per (sub)categorie
     for interest, cats in INTEREST_CATEGORIES.items():
         print(f"📦 {interest}", end="", flush=True)
-        for cat_id, cat_label in cats:
-            collected_for_interest = sum(len(buckets[interest][b]) for b in ["Onder €25","€25-50","€50-100","€100+"])
-            if collected_for_interest >= 120: break
+        for cat_id, cat_label, subcat in cats:
+            cat_cap = CAP_PER_SUBCAT if subcat else CAP_PER_PLAIN_CAT
+            cat_count = 0
             for page in range(1, 7):
+                if cat_count >= cat_cap: break
                 data = api_get(token, "/products/lists/popular",
                     **{"category-id": cat_id, "country-code": "NL", "page": page,
                        "page-size": 50, "include-image": "true", "include-offer": "true"})
                 items = data.get("results", [])
                 if not items: break
                 flat = []
-                collect(token, items, flat, seen_pids)
+                collect(token, items, flat, seen_pids, subcategory=subcat)
                 for it in flat:
-                    b = bucket(it["price"])
-                    buckets[interest][b].append(it)
+                    buckets[interest][bucket(it["price"])].append(it)
+                    cat_count += 1
                 time.sleep(0.25)
-        print(f" → {sum(len(buckets[interest][b]) for b in ['Onder €25','€25-50','€50-100','€100+'])} items")
+        total = sum(len(buckets[interest][b]) for b in ['Onder €25', '€25-50', '€50-100', '€100+'])
+        print(f" → {total} items")
 
     # Phase 2: fill gaps via search
     print("\n🔍 Filling gap cells via search")
@@ -165,14 +253,14 @@ def main():
             time.sleep(0.25)
         print(f"  {interest} × {budget}: {have} → {len(buckets[interest][budget])}")
 
-    # Phase 3: assemble catalog (deterministic IDs based on EAN for stability)
+    # Phase 3: assemble catalog
     random.seed(99)
     budgets_order = ["Onder €25", "€25-50", "€50-100", "€100+"]
     products = []
     pid_counter = 1
     for interest in COLORS:
         for budget in budgets_order:
-            for item in buckets[interest][budget][:PER_CELL]:
+            for item in select_cell(buckets[interest][budget]):
                 price = item["price"]
                 price_str = f"€{int(price)}" if price == int(price) else f"€{price:.2f}".replace(".", ",")
                 tag = ""
@@ -180,7 +268,9 @@ def main():
                     tag = "Premium"
                 elif price < 100:
                     tag = random.choice(["", "", "", "Bestseller", "Tip", "Geliefd"])
-                products.append({
+
+                sub = item.get("subcategory")
+                product = {
                     "id": f"b{pid_counter}",
                     "name": item["title"][:120],
                     "price": price_str,
@@ -190,7 +280,16 @@ def main():
                     "budget": budget,
                     "productId": item["bolProductId"],
                     "imageURL": item["image"],
-                })
+                }
+                if sub:
+                    product["subcategory"] = sub
+                min_age, max_age = compute_age(interest, sub, item["title"])
+                if min_age is not None:
+                    product["minAge"] = min_age
+                if max_age is not None:
+                    product["maxAge"] = max_age
+
+                products.append(product)
                 pid_counter += 1
 
     # Version: use yyyymmdd for traceability
@@ -203,12 +302,20 @@ def main():
 
     # Summary
     grid = defaultdict(lambda: defaultdict(int))
+    subgrid = defaultdict(int)
     for p in products:
         for i in p["interests"]:
             grid[i][p["budget"]] += 1
+        if p.get("subcategory"):
+            subgrid[(p["interests"][0], p["subcategory"])] += 1
     print(f"\n✅ Catalog v{version} written to {out_path}: {len(products)} products")
     issues = sum(1 for i in COLORS for b in budgets_order if grid[i][b] < 10)
     print(f"   Coverage: {'all 10+' if issues == 0 else f'{issues} cells under 10'}")
+    if subgrid:
+        print("   Subcategorieën:")
+        for (interest, sub), n in sorted(subgrid.items()):
+            print(f"     {interest} / {sub}: {n}")
+
 
 if __name__ == "__main__":
     main()
