@@ -1,6 +1,6 @@
 {
   "version": 20260524,
-  "generatedAt": "2026-05-24T20:18:12Z",
+  "generatedAt": "2026-05-24T20:38:51Z",
   "products": [
     {
       "id": "b1",
@@ -525,7 +525,7 @@
     {
       "id": "b41",
       "name": "Demeyere Alu Pro 5 - Ceraforce - Bakpannenset 24cm + 28cm - Inductie",
-      "price": "€149",
+      "price": "€140,70",
       "tag": "",
       "colorHex": "E6A35F",
       "interests": [
@@ -694,7 +694,7 @@
     {
       "id": "b54",
       "name": "Premium 5-delige Weerstandsbanden Set - Fitness Elastiek met 5 Verschillende Weerstanden - Geschikt voor Crossfit, Power",
-      "price": "€20,95",
+      "price": "€21",
       "tag": "",
       "colorHex": "3D6BBF",
       "interests": [
@@ -1603,23 +1603,10 @@
     },
     {
       "id": "b124",
-      "name": "SUITSUIT Reiskoffer 75x49x29 - Reiskoffer met wielen - Veilig Cijferslot - Lichtgewicht koffer - Reiskoffer groot - 94L ",
-      "price": "€63,96",
-      "tag": "Bestseller",
-      "colorHex": "2980B9",
-      "interests": [
-        "Reizen"
-      ],
-      "budget": "€50-100",
-      "productId": "9300000193056343",
-      "imageURL": "https://media.s-bol.com/BMEjDmmXJYnW/2kA0JX1/250x200.jpg"
-    },
-    {
-      "id": "b125",
       "name": "SUITSUIT Kofferset 2 delig - Reiskoffer groot - Handbagage koffer - Koffer set - Veilig Cijferslot - Reiskoffer set - Re",
       "price": "€90,97",
-      "tag": "Geliefd",
-      "colorHex": "9FB8E8",
+      "tag": "Bestseller",
+      "colorHex": "2980B9",
       "interests": [
         "Reizen"
       ],
@@ -1628,11 +1615,11 @@
       "imageURL": "https://media.s-bol.com/8vPDxz7YQN1m/qjlj3Yr/250x200.jpg"
     },
     {
-      "id": "b126",
+      "id": "b125",
       "name": "Voyagoux® - Reiskoffer Medium - 71L - Koffers - Reiskoffer met wielen – Zilver",
       "price": "€54,95",
-      "tag": "",
-      "colorHex": "E8A0B0",
+      "tag": "Geliefd",
+      "colorHex": "9FB8E8",
       "interests": [
         "Reizen"
       ],
@@ -1641,7 +1628,7 @@
       "imageURL": "https://media.s-bol.com/qrOvpExlDGKy/p4LELV/250x200.jpg"
     },
     {
-      "id": "b127",
+      "id": "b126",
       "name": "TAN.TOMI Reiskoffer Groot 76x49x30 – 100L – Grote Trolley Koffer met 4 Wielen & Cijferslot – Handbagage & Ruimbagage - D",
       "price": "€68,84",
       "tag": "",
@@ -1654,11 +1641,11 @@
       "imageURL": "https://media.s-bol.com/RVJGGmVr7gwK/yPp0RkE/250x200.jpg"
     },
     {
-      "id": "b128",
+      "id": "b127",
       "name": "TAN.TOMI Reiskoffer Medium - 65L - Koffers -Trolley Koffer - Reiskoffer met wielen - Cijferslot - Lichtgewicht & Stevig ",
       "price": "€57,84",
-      "tag": "Bestseller",
-      "colorHex": "2980B9",
+      "tag": "",
+      "colorHex": "E8A0B0",
       "interests": [
         "Reizen"
       ],
@@ -1667,11 +1654,11 @@
       "imageURL": "https://media.s-bol.com/3xX8Wm3VBmgO/v2mNKZm/250x200.jpg"
     },
     {
-      "id": "b129",
+      "id": "b128",
       "name": "Reiskoffer groot 76x49x27 - 100L - Spinner wielen - Lichtgewicht - TSA Slot - Norix Onyx Black koffer",
       "price": "€84",
-      "tag": "Geliefd",
-      "colorHex": "D4956D",
+      "tag": "Bestseller",
+      "colorHex": "2980B9",
       "interests": [
         "Reizen"
       ],
@@ -1680,10 +1667,10 @@
       "imageURL": "https://media.s-bol.com/BA4VmMkwnvGk/v26Gxm5/250x200.jpg"
     },
     {
-      "id": "b130",
+      "id": "b129",
       "name": "Handbagage koffer 55x40x20 - 43L - Spinner wielen - Lichtgewicht Trolley - TSA Slot - Norix Onyx Black",
       "price": "€67",
-      "tag": "",
+      "tag": "Geliefd",
       "colorHex": "D4956D",
       "interests": [
         "Reizen"
@@ -1693,10 +1680,10 @@
       "imageURL": "https://media.s-bol.com/mmKZzkpK3O0R/1woQJJG/250x200.jpg"
     },
     {
-      "id": "b131",
+      "id": "b130",
       "name": "NoBoringSuitcases.com® - Koffer groot - Rolkoffer lichtgewicht - Groen met zwarte streep - Reiskoffer met 4 wielen - Gro",
       "price": "€67,96",
-      "tag": "Tip",
+      "tag": "",
       "colorHex": "D4956D",
       "interests": [
         "Reizen"
@@ -1706,17 +1693,30 @@
       "imageURL": "https://media.s-bol.com/BJgMA1vmOY1n/Z6KqJ2Q/250x200.jpg"
     },
     {
-      "id": "b132",
+      "id": "b131",
       "name": "Eastpak TRANVERZ S Reiskoffer, Handbagage (51 x 32.5 x 23 cm) - Black",
       "price": "€80",
-      "tag": "Geliefd",
-      "colorHex": "9FB8E8",
+      "tag": "Tip",
+      "colorHex": "D4956D",
       "interests": [
         "Reizen"
       ],
       "budget": "€50-100",
       "productId": "9200000086519132",
       "imageURL": "https://media.s-bol.com/6Apq7PMwnAyL/DkJkR0n/250x200.jpg"
+    },
+    {
+      "id": "b132",
+      "name": "SUITSUIT Reiskoffer 75x49x29 - Reiskoffer met wielen - Veilig Cijferslot - Lichtgewicht koffer - Reiskoffer groot - 94L ",
+      "price": "€67,96",
+      "tag": "Geliefd",
+      "colorHex": "9FB8E8",
+      "interests": [
+        "Reizen"
+      ],
+      "budget": "€50-100",
+      "productId": "9300000179489559",
+      "imageURL": "https://media.s-bol.com/LpBwQzz1kw8r/M8mrBzB/250x200.jpg"
     },
     {
       "id": "b133",
@@ -2787,7 +2787,7 @@
     {
       "id": "b215",
       "name": "SANDISK Extreme - MicroSDXC - 128GB - Inclusief SD Adapter",
-      "price": "€28,14",
+      "price": "€28,15",
       "tag": "",
       "colorHex": "5C6470",
       "interests": [
@@ -6753,7 +6753,7 @@
     {
       "id": "b516",
       "name": "Kattentunnel Pluche - Tunnel Kat - Kattenhuis - Speeltunnel kat - Grijs",
-      "price": "€16,41",
+      "price": "€17,07",
       "tag": "",
       "colorHex": "B89976",
       "interests": [
@@ -7341,7 +7341,7 @@
     {
       "id": "b558",
       "name": "Superfish Quadro 40 Multi Colour - Aquaria - Zwart Led Voet",
-      "price": "€106,50",
+      "price": "€107",
       "tag": "Premium",
       "colorHex": "8B6F4D",
       "interests": [
