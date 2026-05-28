@@ -293,6 +293,9 @@ def bucket(price):
     return "€100+"
 
 
+_token_cache = {"value": None}
+
+
 def get_token():
     auth = base64.b64encode(f"{CID}:{CS}".encode()).decode()
     req = urllib.request.Request(
@@ -300,19 +303,43 @@ def get_token():
         method="POST", headers={"Authorization": f"Basic {auth}"}
     )
     with urllib.request.urlopen(req, timeout=15) as r:
-        return json.loads(r.read())["access_token"]
+        token = json.loads(r.read())["access_token"]
+    _token_cache["value"] = token
+    return token
 
 
-def api_get(token, path, **params):
+def _refresh_token():
+    print("🔄 Token verlopen, vernieuwen…")
+    return get_token()
+
+
+def api_get(_unused_token, path, **params):
+    """Maakt een API-call. Gebruikt altijd de meest recente cached token.
+    Bij een 401 wordt de token vernieuwd en de call één keer herhaald."""
     qs = urllib.parse.urlencode(params)
-    req = urllib.request.Request(
-        f"https://api.bol.com/marketing/catalog/v1{path}?{qs}",
-        headers={"Authorization": f"Bearer {token}", "Accept": "application/json", "Accept-Language": "nl"}
-    )
+
+    def _do_request():
+        t = _token_cache["value"]
+        req = urllib.request.Request(
+            f"https://api.bol.com/marketing/catalog/v1{path}?{qs}",
+            headers={"Authorization": f"Bearer {t}", "Accept": "application/json", "Accept-Language": "nl"}
+        )
+        return urllib.request.urlopen(req, timeout=30)
+
     try:
-        with urllib.request.urlopen(req, timeout=30) as r:
+        with _do_request() as r:
             return json.loads(r.read())
     except urllib.error.HTTPError as e:
+        if e.code == 401:
+            # Token verlopen: refresh en één retry
+            _refresh_token()
+            try:
+                with _do_request() as r:
+                    return json.loads(r.read())
+            except urllib.error.HTTPError as e2:
+                if e2.code in (404, 400, 401):
+                    return {"results": []}
+                raise
         if e.code in (404, 400):
             return {"results": []}
         raise
