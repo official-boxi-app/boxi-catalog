@@ -214,7 +214,7 @@ PER_CELL = 48
 # (sub)categorie nodig, plus marge voor budget-spreiding en dedup.
 CAP_PER_SUBCAT = 350
 CAP_PER_PLAIN_CAT = 800
-SUBCAT_SEARCH_PAGES = 5
+SUBCAT_SEARCH_PAGES = 3
 
 # --- Leeftijd-tagging -------------------------------------------------------
 # bol levert geen leeftijdsdata; deze regels leiden het af uit titel + subcategorie.
@@ -391,24 +391,6 @@ def main():
                 buckets[interest][bucket(it["price"])].append(it)
             time.sleep(0.25)
 
-        for budget in budgets_order:
-            if any(it.get("subcategory") == subcat for it in buckets[interest][budget]):
-                continue
-            for page in range(SUBCAT_SEARCH_PAGES + 1, SUBCAT_SEARCH_PAGES + 4):
-                params = {"search-term": term, "country-code": "NL", "page": page,
-                          "page-size": 50, "sort": "POPULARITY",
-                          "include-image": "true", "include-offer": "true"}
-                if cat_id: params["category-id"] = cat_id
-                data = api_get(token, "/products/search", **params)
-                flat = []
-                extra_blocklist = DRINK_OFFTOPIC_KEYWORDS if interest == "Wijn & Drank" else None
-                collect(token, data.get("results", []), flat, seen_pids, want_budget=budget, subcategory=subcat, blocklist_extra=extra_blocklist)
-                for it in flat:
-                    buckets[interest][budget].append(it)
-                time.sleep(0.25)
-                if any(it.get("subcategory") == subcat for it in buckets[interest][budget]):
-                    break
-
         after = sum(len(buckets[interest][b]) for b in budgets_order)
         print(f"  {interest} / {subcat}: +{after - before}")
 
@@ -517,6 +499,12 @@ def main():
         print("   Subcategorieën:")
         for (interest, sub), n in sorted(subgrid.items()):
             print(f"     {interest} / {sub}: {n}")
+    expected_subs = {(interest, sub) for interest, sub, _, _ in CATEGORY_SEARCHES}
+    missing_subs = sorted(expected_subs - set(subgrid))
+    if missing_subs:
+        print("   ⚠️ Subcategorieën zonder producten:")
+        for interest, sub in missing_subs:
+            print(f"     {interest} / {sub}")
 
 
 if __name__ == "__main__":
