@@ -69,6 +69,8 @@ INTEREST_CATEGORIES = {
 # Searches to enrich bol-menu-like subcategories and fill sparse cells.
 # Tuple: (interest, subcategory, search term, optional bol category-id)
 CATEGORY_SEARCHES = [
+    # Vooraan zodat de gaming-LEGO niet door Speelgoed wordt weggekaapt (globale dedup).
+    ("Gaming", "LEGO & bouwsets", "LEGO Super Mario", "7934"),
     ("Baby & Peuter", "Baby speelgoed", "baby speelgoed", "10477"),
     ("Baby & Peuter", "Knuffels", "knuffeldoekje baby", "10477"),
     ("Baby & Peuter", "Boekjes", "baby boekje", "24421"),
@@ -132,7 +134,6 @@ CATEGORY_SEARCHES = [
     ("Gaming", "Xbox", "Xbox game", "3135"),
     ("Gaming", "PC", "PC game accessoires", "3135"),
     ("Gaming", "Game-accessoires", "gaming accessoires", "3135"),
-    ("Gaming", "LEGO & bouwsets", "LEGO bouwset", "7934"),
 
     ("Lezen", "Young Adult", "young adult boek", "24421"),
     ("Lezen", "Biografie", "biografie boek", "40342"),
