@@ -40,7 +40,7 @@ INTEREST_CATEGORIES = {
     "Muziek":        [("3132", "Muziek", None)],
     "Tech":          [("3136", "Elektronica", None), ("3134", "Computer", None)],
     "Beauty":        [("43228", "Beauty", None)],
-    "Fashion":       [("46866", "Sieraden", "Sieraden"), ("53539", "Horloges", "Horloges"), ("71272", "Tassen", "Tassen")],
+    "Fashion":       [("46866", "Sieraden", "Sieraden"), ("71272", "Tassen", "Tassen")],
     "Gaming":        [("3135", "Gaming", None)],
     "Lezen": [
         ("24410", "Literatuur & Romans",       "Romans & thrillers"),
@@ -117,14 +117,14 @@ CATEGORY_SEARCHES = [
 
     ("Beauty", "Make-up", "make-up cadeau", "43228"),
     ("Beauty", "Skincare", "skincare cadeau", "43228"),
-    ("Beauty", "Parfum", "parfum cadeau", "43228"),
+    # Parfum komt via GENDERED_CATEGORIES (dames/heren apart, met gender-tag).
     ("Beauty", "Haarverzorging", "haarverzorging cadeau", "43228"),
     ("Beauty", "Lichaamsverzorging", "lichaamsverzorging cadeau", "43228"),
     ("Beauty", "Wellness", "wellness cadeau", "43228"),
 
     ("Fashion", "Tassen", "handtas schoudertas cadeau", "71272"),
     ("Fashion", "Sieraden", "sieraden cadeau", "46866"),
-    ("Fashion", "Horloges", "horloge cadeau", "53539"),
+    # Horloges komen via GENDERED_CATEGORIES (dames/heren apart, met gender-tag).
     ("Fashion", "Accessoires", "sjaal riem mode accessoire cadeau", None),
 
     ("Gaming", "Nintendo", "Nintendo Switch game", "3135"),
@@ -165,6 +165,17 @@ CATEGORY_SEARCHES = [
     ("Wijn & Drank", "Whisky", "whisky cadeau", "36080"),
     ("Wijn & Drank", "Cocktails", "cocktail set", "36080"),
     ("Wijn & Drank", "Glazen & Accessoires", "wijnglazen drankaccessoires", "36080"),
+]
+
+# Geslachtsspecifieke bol-categorieën: producten hieruit krijgen een expliciet
+# gender-label ("man"/"vrouw"), zodat de app niet hoeft te raden op de titel.
+# Tuple: (interest, subcategorie, bol-categorie-id, gender)
+GENDERED_CATEGORIES = [
+    ("Fashion", "Horloges", "46925", "vrouw"),   # Dameshorloges
+    ("Fashion", "Horloges", "47156", "man"),     # Herenhorloges
+    ("Fashion", "Sieraden", "53021", "vrouw"),   # Nieuwe collectie dames sieraden
+    ("Beauty",  "Parfum",   "12429", "vrouw"),   # Damesparfums
+    ("Beauty",  "Parfum",   "12432", "man"),     # Herenparfums
 ]
 
 # Search fallbacks for cells that don't have enough items via popular endpoint.
@@ -345,7 +356,7 @@ def api_get(_unused_token, path, **params):
         raise
 
 
-def collect(token, items, dest, seen_pids, want_budget=None, subcategory=None, blocklist_extra=None):
+def collect(token, items, dest, seen_pids, want_budget=None, subcategory=None, blocklist_extra=None, gender=None):
     added = 0
     blocklist_extra = blocklist_extra or []
     for p in items:
@@ -367,6 +378,7 @@ def collect(token, items, dest, seen_pids, want_budget=None, subcategory=None, b
         dest.append({
             "ean": p.get("ean"), "bolProductId": pid, "title": title,
             "price": price, "image": img, "subcategory": subcategory,
+            "gender": gender,
         })
         added += 1
     return added
@@ -424,6 +436,25 @@ def main():
 
         after = sum(len(buckets[interest][b]) for b in budgets_order)
         print(f"  {interest} / {subcat}: +{after - before}")
+
+    # Phase 1b: geslachtsspecifieke categorieën (dames/heren apart, met gender-tag).
+    # Vóór de brede 'popular' fase, zodat deze producten als eerste geclaimd worden.
+    print("\n⚧  Filling gendered categories")
+    for interest, subcat, cat_id, gender in GENDERED_CATEGORIES:
+        before = sum(len(buckets[interest][b]) for b in budgets_order)
+        for page in range(1, 9):
+            data = api_get(token, "/products/lists/popular",
+                **{"category-id": cat_id, "country-code": "NL", "page": page,
+                   "page-size": 50, "include-image": "true", "include-offer": "true"})
+            items = data.get("results", [])
+            if not items: break
+            flat = []
+            collect(token, items, flat, seen_pids, subcategory=subcat, gender=gender)
+            for it in flat:
+                buckets[interest][bucket(it["price"])].append(it)
+            time.sleep(0.25)
+        after = sum(len(buckets[interest][b]) for b in budgets_order)
+        print(f"  {interest} / {subcat} [{gender}]: +{after - before}")
 
     # Phase 2: popular per (sub)categorie
     for interest, cats in INTEREST_CATEGORIES.items():
@@ -498,6 +529,8 @@ def main():
                 }
                 if sub:
                     product["subcategory"] = sub
+                if item.get("gender"):
+                    product["gender"] = item["gender"]
                 min_age, max_age = compute_age(interest, sub, item["title"])
                 if min_age is not None:
                     product["minAge"] = min_age
