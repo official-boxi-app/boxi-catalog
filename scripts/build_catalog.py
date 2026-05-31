@@ -386,21 +386,22 @@ def collect(token, items, dest, seen_pids, want_budget=None, subcategory=None, b
 
 def select_cell(items):
     """Selecteert tot PER_CELL producten voor één interesse+budget-cel:
-    ontdubbelt op productfamilie en mengt subcategorieën via round-robin,
-    zodat elke subcategorie kans maakt in de cel."""
+    ontdubbelt op productfamilie en mengt via round-robin over
+    (subcategorie, gender), zodat zowel elke subcategorie als beide
+    geslachten (bv. dames- én herenhorloges) kans maken in de cel."""
     seen = set()
-    by_sub = defaultdict(list)
+    by_group = defaultdict(list)
     for it in items:
         fk = family_key(it["title"])
         if fk in seen:
             continue
         seen.add(fk)
-        by_sub[it.get("subcategory")].append(it)
+        by_group[(it.get("subcategory"), it.get("gender"))].append(it)
 
-    subs = list(by_sub.keys())
+    groups = list(by_group.keys())
     chosen, i = [], 0
-    while len(chosen) < PER_CELL and any(by_sub.values()):
-        lst = by_sub[subs[i % len(subs)]]
+    while len(chosen) < PER_CELL and any(by_group.values()):
+        lst = by_group[groups[i % len(groups)]]
         if lst:
             chosen.append(lst.pop(0))
         i += 1
