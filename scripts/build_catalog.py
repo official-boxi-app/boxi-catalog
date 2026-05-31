@@ -72,7 +72,7 @@ CATEGORY_SEARCHES = [
     ("Baby & Peuter", "Baby speelgoed", "baby speelgoed", "10477"),
     ("Baby & Peuter", "Knuffels", "knuffeldoekje baby", "10477"),
     ("Baby & Peuter", "Boekjes", "baby boekje", "24421"),
-    ("Baby & Peuter", "Verzorging", "baby verzorging cadeauset", "11306"),
+    ("Baby & Peuter", "Verzorging", "babyverzorging", "11306"),
 
     ("Speelgoed", "Bouwen & Constructie", "bouwspeelgoed LEGO", "7934"),
     ("Speelgoed", "Spellen", "bordspel", "7934"),
@@ -165,8 +165,8 @@ CATEGORY_SEARCHES = [
     ("Wijn & Drank", "Wijn", "wijn decanteerkaraf geschenk", "36080"),
     ("Wijn & Drank", "Bier", "bierpakket proeverij cadeau", "36080"),
     ("Wijn & Drank", "Whisky", "whisky glazen geschenkset", "36080"),
-    ("Wijn & Drank", "Cocktails", "cocktailshaker set", "36080"),
-    ("Wijn & Drank", "Glazen & Accessoires", "wijnglazen geschenkset", "36080"),
+    ("Wijn & Drank", "Cocktails", "cocktailshaker", "36080"),
+    ("Wijn & Drank", "Glazen & Accessoires", "wijnglazen drankaccessoires", "36080"),
 ]
 
 # Geslachtsspecifieke bol-categorieën: producten hieruit krijgen een expliciet
