@@ -33,6 +33,12 @@ if not CID or not CS:
 #   subcategorie = "..." → elk product uit die bol-categorie krijgt dit subcategorie-label
 INTEREST_CATEGORIES = {
     "Baby & Peuter": [],
+    "Spelletjes": [
+        ("20300", "Bordspellen",   "Bordspellen"),
+        ("10600", "Kaartspellen",  "Kaartspellen"),
+        ("10603", "Dobbelspellen", "Dobbelspellen"),
+        ("48372", "Partyspellen",  "Partyspellen"),
+    ],
     "Speelgoed":     [("7934", "Speelgoed", None)],
     "Koken":         [("11764", "Koken & Tafelen", None)],
     "Sport":         [("14648", "Sport", None)],
@@ -71,6 +77,14 @@ INTEREST_CATEGORIES = {
 CATEGORY_SEARCHES = [
     # Vooraan zodat de gaming-LEGO niet door Speelgoed wordt weggekaapt (globale dedup).
     ("Gaming", "LEGO & bouwsets", "LEGO Super Mario", "7934"),
+    # Spelletjes vóór Speelgoed, zodat de spellen hier geclaimd worden i.p.v. onder Speelgoed.
+    ("Spelletjes", "Bordspellen",       "bordspel gezelschapsspel", "20300"),
+    ("Spelletjes", "Kaartspellen",      "kaartspel", "10600"),
+    ("Spelletjes", "Dobbelspellen",     "dobbelspel", "10603"),
+    ("Spelletjes", "Partyspellen",      "partyspel volwassenen", "48372"),
+    ("Spelletjes", "Kinderspellen",     "kinderspel gezelschapsspel", "10596"),
+    ("Spelletjes", "Educatieve spellen","educatief spel leerzaam", "10596"),
+    ("Spelletjes", "Trading Cards",     "trading card game booster", None),
     ("Baby & Peuter", "Baby speelgoed", "baby speelgoed", "10477"),
     ("Baby & Peuter", "Knuffels", "knuffeldoekje baby", "10477"),
     ("Baby & Peuter", "Boekjes", "baby boekje", "24421"),
@@ -210,6 +224,7 @@ GAP_SEARCHES = {
 
 COLORS = {
     "Baby & Peuter": ["F0BFC4", "E8A0B0", "B5CC8F", "9FB8E8", "D6BFA0"],
+    "Spelletjes":    ["D4263A", "E6A35F", "5B7DC9", "2E9B7B", "9C5DD1"],
     "Speelgoed":     ["E4000F", "E6A35F", "9C5DD1", "84C4AC", "5B7DC9"],
     "Koken":         ["E6A35F", "C9874E", "8B5A2B", "D4626A", "9CB36A"],
     "Sport":         ["5B7DC9", "3D6BBF", "84C4AC", "2E9B7B", "27AE60"],
@@ -254,6 +269,7 @@ DRINK_OFFTOPIC_KEYWORDS = [
 
 INTEREST_AGE_DEFAULTS = {
     "Baby & Peuter": (0, 3),
+    "Spelletjes": (6, None),
     "Speelgoed": (4, 12),
     "Koken": (14, None),
     "Sport": (7, None),
