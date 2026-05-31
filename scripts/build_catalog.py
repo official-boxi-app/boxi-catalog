@@ -61,7 +61,7 @@ INTEREST_CATEGORIES = {
         ("12835", "Katten",      "Katten"),
         ("12888", "Knaagdieren", "Knaagdieren"),
         ("12885", "Vissen",      "Vissen"),
-        ("12887", "Vogels",      "Vogels"),
+        ("12912", "Vogels",      "Vogels"),
         ("12924", "Reptielen",   "Reptielen"),
     ],
 }
@@ -102,8 +102,8 @@ CATEGORY_SEARCHES = [
     ("Reizen", "Outdoor", "kamperen accessoires", "15270"),
     ("Reizen", "Camera-accessoires", "camera accessoire reizen", "3136"),
 
-    ("Muziek", "Koptelefoons", "koptelefoon", "3132"),
-    ("Muziek", "Speakers", "bluetooth speaker", "3132"),
+    ("Muziek", "Koptelefoons", "koptelefoon", "3136"),
+    ("Muziek", "Speakers", "bluetooth speaker", "3136"),
     ("Muziek", "Instrumenten", "muziekinstrument", "3132"),
     ("Muziek", "Vinyl & CD", "vinyl plaat", "3132"),
     ("Muziek", "Muziekaccessoires", "muziek accessoires", "3132"),
@@ -118,7 +118,7 @@ CATEGORY_SEARCHES = [
     ("Beauty", "Make-up", "make-up cadeau", "43228"),
     ("Beauty", "Skincare", "skincare cadeau", "43228"),
     # Parfum komt via GENDERED_CATEGORIES (dames/heren apart, met gender-tag).
-    ("Beauty", "Haarverzorging", "haarverzorging cadeau", "43228"),
+    ("Beauty", "Haarverzorging", "haarverzorging", "12477"),
     ("Beauty", "Lichaamsverzorging", "lichaamsverzorging cadeau", "43228"),
     ("Beauty", "Wellness", "wellness cadeau", "43228"),
 
@@ -132,12 +132,12 @@ CATEGORY_SEARCHES = [
     ("Gaming", "Xbox", "Xbox game", "3135"),
     ("Gaming", "PC", "PC game accessoires", "3135"),
     ("Gaming", "Game-accessoires", "gaming accessoires", "3135"),
-    ("Gaming", "LEGO & bouwsets", "LEGO gaming", "4"),
+    ("Gaming", "LEGO & bouwsets", "LEGO bouwset", "7934"),
 
     ("Lezen", "Young Adult", "young adult boek", "24421"),
     ("Lezen", "Biografie", "biografie boek", "40342"),
 
-    ("Creatief", "Knutselen", "knutselen cadeau", "4"),
+    ("Creatief", "Knutselen", "knutselpakket", "10505"),
     ("Creatief", "Tekenen & Kleuren", "tekenspullen", "19237"),
     ("Creatief", "Schilderen", "schilderen set", "19215"),
     ("Creatief", "Kleien", "kleien boetseren", "19398"),
@@ -184,14 +184,17 @@ GENDERED_CATEGORIES = [
 GAP_SEARCHES = {
     ("Baby & Peuter", "Onder €25"): [("baby speelgoed", "10477"), ("knuffeldoekje", "10477"), ("babyboekje", "24421")],
     ("Baby & Peuter", "€25-50"):    [("loopwagen baby", "10477"), ("speelkleed baby", "10477"), ("baby cadeauset", "11306")],
-    ("Baby & Peuter", "€50-100"):   [("baby gym", "10477"), ("houten baby speelgoed", "10477"), ("baby verzorgingsset", "11306")],
-    ("Baby & Peuter", "€100+"):     [("loopfiets baby", "10477"), ("baby cadeau luxe", "11306"), ("speelgoedkist baby", "10477")],
+    ("Baby & Peuter", "€50-100"):   [("baby gym", "10477"), ("houten baby speelgoed", "10477"), ("baby verzorgingsset", "11306"), ("babyschommel", "10477"), ("activiteitentafel baby", "10477")],
+    ("Baby & Peuter", "€100+"):     [("loopfiets baby", "10477"), ("baby cadeau luxe", "11306"), ("speelgoedkist baby", "10477"), ("houten schommelpaard", "10477"), ("baby box", "10477"), ("luxe babyspeelgoed set", "10477")],
     ("Speelgoed", "Onder €25"):     [("spel kinderen", "7934"), ("puzzel", "7934"), ("LEGO", "7934")],
     ("Speelgoed", "€25-50"):        [("bouwspeelgoed", "7934"), ("educatief speelgoed", "7934"), ("buitenspeelgoed", "7934")],
     ("Speelgoed", "€50-100"):       [("LEGO set", "7934"), ("bordspel", "7934"), ("houten speelgoed", "7934")],
     ("Speelgoed", "€100+"):         [("LEGO technic", "7934"), ("speelkeuken", "7934"), ("trampoline", None)],
-    ("Muziek", "€100+"):       [("koptelefoon", "3132"), ("Sonos", None), ("Bose speaker", None), ("Marshall speaker", None)],
-    ("Lezen", "€100+"):        [("boekenkast", None), ("Kindle", None), ("Kobo", None)],
+    ("Muziek", "€100+"):       [("koptelefoon", "3136"), ("Sonos", None), ("Bose speaker", None), ("Marshall speaker", None), ("platenspeler", "3132")],
+    ("Lezen", "€50-100"):      [("luxe boekenset", None), ("complete boekenreeks", None), ("e-reader", None)],
+    ("Lezen", "€100+"):        [("boekenkast", None), ("Kindle Paperwhite", None), ("Kobo e-reader", None), ("luxe verzamelaarseditie boek", None)],
+    ("Creatief", "€50-100"):   [("schildersezel", "19215"), ("hobby naaimachine", "10505"), ("diamond painting groot", "10505")],
+    ("Creatief", "€100+"):     [("schildersezel staand", "19215"), ("naaimachine", "10505"), ("tekentablet", "3136"), ("borduurmachine", "10505")],
     ("Film & Series", "€50-100"): [("boxset", "3133"), ("blu-ray", "3133"), ("complete serie", "3133")],
     ("Film & Series", "€100+"): [("blu-ray collector", "3133"), ("complete saga", "3133")],
     # Geen horloges in de gap-fill: die komen gender-getagd uit GENDERED_CATEGORIES.
@@ -199,7 +202,8 @@ GAP_SEARCHES = {
     ("Fashion", "€25-50"):      [("handtas cadeau", "71272"), ("portemonnee leer", "71272"), ("sjaal handschoenen set", None)],
     ("Fashion", "€50-100"):     [("tas leer cadeau", "71272"), ("leren handtas", "71272"), ("luxe sjaal", None)],
     ("Fashion", "€100+"):       [("luxe handtas", "71272"), ("designer tas", "71272"), ("leren weekendtas", "71272")],
-    ("Wijn & Drank", "€100+"): [("whisky glazen geschenkset", None), ("wijn decanteerkaraf", None), ("cocktail giftset luxe", None)],
+    ("Wijn & Drank", "€50-100"): [("wijnglazen kristal set", None), ("whiskyglazen geschenkset", None), ("bierbrouw startpakket luxe", None), ("koffie cadeaupakket", None)],
+    ("Wijn & Drank", "€100+"): [("whisky glazen decanteerset", None), ("wijnkoeler rvs", None), ("luxe cocktail giftset", None), ("sommelier wijnset", None)],
     ("Beauty", "€100+"):       [("luxe huidverzorging cadeauset", "43228"), ("beauty cadeaubox luxe", "43228"), ("verzorging geschenkset", "43228")],
 }
 
