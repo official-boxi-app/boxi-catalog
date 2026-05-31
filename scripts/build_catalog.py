@@ -153,7 +153,7 @@ CATEGORY_SEARCHES = [
     ("Film & Series", "Films", "film blu-ray", "3133"),
     ("Film & Series", "Series", "complete serie dvd", "3133"),
     ("Film & Series", "Blu-ray & DVD", "blu-ray dvd", "3133"),
-    ("Film & Series", "Merchandise", "film merchandise", "3133"),
+    ("Film & Series", "Merchandise", "Funko Pop", None),
 
     ("Wonen", "Woondecoratie", "woondecoratie cadeau", "14035"),
     ("Wonen", "Verlichting", "sfeerverlichting", "14035"),
