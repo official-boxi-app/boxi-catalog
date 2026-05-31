@@ -62,17 +62,17 @@ INTEREST_CATEGORIES = {
         ("12888", "Knaagdieren", "Knaagdieren"),
         ("12885", "Vissen",      "Vissen"),
         ("12887", "Vogels",      "Vogels"),
-        ("12889", "Reptielen",   "Reptielen"),
+        ("12924", "Reptielen",   "Reptielen"),
     ],
 }
 
 # Searches to enrich bol-menu-like subcategories and fill sparse cells.
 # Tuple: (interest, subcategory, search term, optional bol category-id)
 CATEGORY_SEARCHES = [
-    ("Baby & Peuter", "Baby speelgoed", "baby speelgoed", "4"),
-    ("Baby & Peuter", "Knuffels", "knuffeldoekje baby", "4"),
+    ("Baby & Peuter", "Baby speelgoed", "baby speelgoed", "10477"),
+    ("Baby & Peuter", "Knuffels", "knuffeldoekje baby", "10477"),
     ("Baby & Peuter", "Boekjes", "baby boekje", "24421"),
-    ("Baby & Peuter", "Verzorging", "baby verzorging cadeau", "4"),
+    ("Baby & Peuter", "Verzorging", "baby verzorging cadeauset", "11306"),
 
     ("Speelgoed", "Bouwen & Constructie", "bouwspeelgoed LEGO", "7934"),
     ("Speelgoed", "Spellen", "bordspel", "7934"),
@@ -85,14 +85,14 @@ CATEGORY_SEARCHES = [
 
     ("Koken", "Keukengadgets", "keukengadget cadeau", "11764"),
     ("Koken", "Bakken", "bakspullen", "11764"),
-    ("Koken", "Kookboeken", "kookboek", "24410"),
+    ("Koken", "Kookboeken", "kookboek", "1701"),
     ("Koken", "Pannen", "pannenset", "11764"),
     ("Koken", "Koffie & Thee", "koffie thee cadeau", "11764"),
     ("Koken", "BBQ", "barbecue accessoires", "11764"),
 
     ("Sport", "Fitness", "fitness cadeau", "14648"),
     ("Sport", "Voetbal", "voetbal cadeau", "14648"),
-    ("Sport", "Hardlopen", "hardlopen accessoires", "14648"),
+    ("Sport", "Hardlopen", "hardloopaccessoires", "17546"),
     ("Sport", "Fietsen", "fiets accessoires", "14648"),
     ("Sport", "Yoga", "yoga cadeau", "14648"),
     ("Sport", "Outdoor", "outdoor sport cadeau", "14648"),
@@ -110,7 +110,7 @@ CATEGORY_SEARCHES = [
 
     ("Tech", "Telefoonaccessoires", "telefoonaccessoires", "3136"),
     ("Tech", "Audio", "audio gadget", "3136"),
-    ("Tech", "Smart home", "smart home", "3136"),
+    ("Tech", "Smart home", "smart home slimme verlichting domotica", "3136"),
     ("Tech", "Computeraccessoires", "computeraccessoires", "3134"),
     ("Tech", "Camera", "camera gadget", "3136"),
     ("Tech", "Wearables", "smartwatch activity tracker", "3136"),
@@ -144,9 +144,9 @@ CATEGORY_SEARCHES = [
     ("Creatief", "Fotografie", "fotografie cadeau", "3136"),
     ("Creatief", "DIY", "DIY pakket volwassenen", None),
 
-    ("Natuur", "Tuinieren", "tuinieren cadeau", "12974"),
-    ("Natuur", "Vogels", "vogelhuisje", "12974"),
-    ("Natuur", "Planten", "plant cadeau", "12974"),
+    ("Natuur", "Tuinieren", "tuingereedschap cadeau", "12974"),
+    ("Natuur", "Vogels", "vogelhuisje voederhuisje", "25557"),
+    ("Natuur", "Planten", "kamerplant", "14371"),
     ("Natuur", "Outdoor", "outdoor natuur cadeau", "15270"),
 
     ("Film & Series", "Films", "film blu-ray", "3133"),
@@ -160,11 +160,13 @@ CATEGORY_SEARCHES = [
     ("Wonen", "Textiel", "woontextiel cadeau", "14035"),
     ("Wonen", "Opbergen", "opbergen wonen", "14035"),
 
-    ("Wijn & Drank", "Wijn", "wijn cadeau", "36080"),
-    ("Wijn & Drank", "Bier", "bier cadeaupakket", "36080"),
-    ("Wijn & Drank", "Whisky", "whisky cadeau", "36080"),
-    ("Wijn & Drank", "Cocktails", "cocktail set", "36080"),
-    ("Wijn & Drank", "Glazen & Accessoires", "wijnglazen drankaccessoires", "36080"),
+    # Echte alcohol is via de affiliate-API nauwelijks beschikbaar (leeftijdscheck),
+    # dus we richten ons op giftbare drinkwaren, proefpakketten en accessoires.
+    ("Wijn & Drank", "Wijn", "wijn decanteerkaraf geschenk", "36080"),
+    ("Wijn & Drank", "Bier", "bierpakket proeverij cadeau", "36080"),
+    ("Wijn & Drank", "Whisky", "whisky glazen geschenkset", "36080"),
+    ("Wijn & Drank", "Cocktails", "cocktailshaker set", "36080"),
+    ("Wijn & Drank", "Glazen & Accessoires", "wijnglazen geschenkset", "36080"),
 ]
 
 # Geslachtsspecifieke bol-categorieën: producten hieruit krijgen een expliciet
@@ -180,10 +182,10 @@ GENDERED_CATEGORIES = [
 
 # Search fallbacks for cells that don't have enough items via popular endpoint.
 GAP_SEARCHES = {
-    ("Baby & Peuter", "Onder €25"): [("baby speelgoed", "4"), ("knuffeldoekje", "4"), ("babyboekje", "24421")],
-    ("Baby & Peuter", "€25-50"):    [("loopwagen baby", "4"), ("speelkleed baby", "4"), ("baby cadeau", "4")],
-    ("Baby & Peuter", "€50-100"):   [("baby gym", "4"), ("houten baby speelgoed", "4"), ("babyfoon", "3136")],
-    ("Baby & Peuter", "€100+"):     [("loopfiets baby", "4"), ("babyfoon camera", "3136"), ("speelgoedkist baby", "14035")],
+    ("Baby & Peuter", "Onder €25"): [("baby speelgoed", "10477"), ("knuffeldoekje", "10477"), ("babyboekje", "24421")],
+    ("Baby & Peuter", "€25-50"):    [("loopwagen baby", "10477"), ("speelkleed baby", "10477"), ("baby cadeauset", "11306")],
+    ("Baby & Peuter", "€50-100"):   [("baby gym", "10477"), ("houten baby speelgoed", "10477"), ("baby verzorgingsset", "11306")],
+    ("Baby & Peuter", "€100+"):     [("loopfiets baby", "10477"), ("baby cadeau luxe", "11306"), ("speelgoedkist baby", "10477")],
     ("Speelgoed", "Onder €25"):     [("spel kinderen", "7934"), ("puzzel", "7934"), ("LEGO", "7934")],
     ("Speelgoed", "€25-50"):        [("bouwspeelgoed", "7934"), ("educatief speelgoed", "7934"), ("buitenspeelgoed", "7934")],
     ("Speelgoed", "€50-100"):       [("LEGO set", "7934"), ("bordspel", "7934"), ("houten speelgoed", "7934")],
@@ -192,12 +194,13 @@ GAP_SEARCHES = {
     ("Lezen", "€100+"):        [("boekenkast", None), ("Kindle", None), ("Kobo", None)],
     ("Film & Series", "€50-100"): [("boxset", "3133"), ("blu-ray", "3133"), ("complete serie", "3133")],
     ("Film & Series", "€100+"): [("blu-ray collector", "3133"), ("complete saga", "3133")],
-    ("Fashion", "Onder €25"):   [("sieraad cadeau", "46866"), ("armband cadeau", "46866"), ("sjaal cadeau", None)],
-    ("Fashion", "€25-50"):      [("handtas cadeau", "71272"), ("horloge dames", "53539"), ("sieraden set", "46866")],
-    ("Fashion", "€50-100"):     [("tas leer cadeau", "71272"), ("horloge heren", "53539"), ("armband goud zilver", "46866")],
-    ("Fashion", "€100+"):       [("luxe handtas", "71272"), ("horloge cadeau premium", "53539"), ("gouden ketting", "46866")],
-    ("Wijn & Drank", "€100+"): [("Macallan whisky", None), ("Glenfiddich 18", None), ("Hennessy", None), ("Veuve Clicquot", None)],
-    ("Beauty", "€100+"):       [("Dior parfum", None), ("Chanel parfum", None), ("Tom Ford parfum", None)],
+    # Geen horloges in de gap-fill: die komen gender-getagd uit GENDERED_CATEGORIES.
+    ("Fashion", "Onder €25"):   [("sjaal cadeau", None), ("riem cadeau", None), ("zonnebril cadeau", None)],
+    ("Fashion", "€25-50"):      [("handtas cadeau", "71272"), ("portemonnee leer", "71272"), ("sjaal handschoenen set", None)],
+    ("Fashion", "€50-100"):     [("tas leer cadeau", "71272"), ("leren handtas", "71272"), ("luxe sjaal", None)],
+    ("Fashion", "€100+"):       [("luxe handtas", "71272"), ("designer tas", "71272"), ("leren weekendtas", "71272")],
+    ("Wijn & Drank", "€100+"): [("whisky glazen geschenkset", None), ("wijn decanteerkaraf", None), ("cocktail giftset luxe", None)],
+    ("Beauty", "€100+"):       [("luxe huidverzorging cadeauset", "43228"), ("beauty cadeaubox luxe", "43228"), ("verzorging geschenkset", "43228")],
 }
 
 COLORS = {
